@@ -1,0 +1,51 @@
+{
+  "kind": "youtube#video",
+  "etag": "G11r2ha7BXSiqGHdrcQmT1ODp5A",
+  "id": "IXY08X9ulUI",
+  "snippet": {
+    "publishedAt": "2025-01-02T20:42:07Z",
+    "channelId": "UCLJ2Oi9n9Sj0AsQrqZ0ANwA",
+    "title": "First 2025 training💃🍀❤️",
+    "description": "",
+    "thumbnails": {
+      "default": {
+        "url": "https://i.ytimg.com/vi/IXY08X9ulUI/default.jpg",
+        "width": 120,
+        "height": 90
+      },
+      "medium": {
+        "url": "https://i.ytimg.com/vi/IXY08X9ulUI/mqdefault.jpg",
+        "width": 320,
+        "height": 180
+      },
+      "high": {
+        "url": "https://i.ytimg.com/vi/IXY08X9ulUI/hqdefault.jpg",
+        "width": 480,
+        "height": 360
+      },
+      "standard": {
+        "url": "https://i.ytimg.com/vi/IXY08X9ulUI/sddefault.jpg",
+        "width": 640,
+        "height": 480
+      },
+      "maxres": {
+        "url": "https://i.ytimg.com/vi/IXY08X9ulUI/maxresdefault.jpg",
+        "width": 1280,
+        "height": 720
+      }
+    },
+    "channelTitle": "Maria Rosaria Dalmonte",
+    "categoryId": "22",
+    "liveBroadcastContent": "none",
+    "localized": {
+      "title": "First 2025 training💃🍀❤️",
+      "description": ""
+    }
+  },
+  "statistics": {
+    "viewCount": "335579",
+    "likeCount": "20977",
+    "favoriteCount": "0",
+    "commentCount": "275"
+  }
+}
