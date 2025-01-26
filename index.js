@@ -99,6 +99,7 @@ async function getChannelId(channelName) {
 }
 
 async function getVideoIdsFromChannel(channelId) {
+  console.log("fetch all");
   const YOUTUBE_API_URL = "https://www.googleapis.com/youtube/v3/";
   const videoIds = [];
   let nextPageToken = "";
@@ -110,7 +111,7 @@ async function getVideoIdsFromChannel(channelId) {
           channelId,
           part: "id",
           maxResults: 50,
-          type: "sh",
+          type: "video",
           pageToken: nextPageToken,
         },
       });
@@ -134,9 +135,59 @@ async function getVideoIdsFromChannel(channelId) {
   }
 }
 
+async function getRecentVideoIdsFromChannel(channelId, maxCount) {
+  console.log(`fetch only ${maxCount}`);
+  const YOUTUBE_API_URL = "https://www.googleapis.com/youtube/v3/";
+  const videoIds = [];
+  let nextPageToken = "";
+  let fetchedCount = 0; // 현재까지 가져온 비디오 개수
+
+  try {
+    do {
+      const response = await axios.get(`${YOUTUBE_API_URL}search`, {
+        params: {
+          key: APIKey,
+          channelId,
+          part: "id",
+          maxResults: 50,
+          type: "video", // 동영상만 가져옴
+          order: "date", // 최신 순으로 정렬
+          pageToken: nextPageToken,
+        },
+      });
+
+      const items = response.data.items;
+      items.forEach((item) => {
+        if (fetchedCount < maxCount) {
+          videoIds.push(item.id.videoId);
+          fetchedCount++;
+        }
+      });
+
+      nextPageToken = response.data.nextPageToken || "";
+
+      // 원하는 개수를 다 가져오면 루프 중단
+      if (fetchedCount >= maxCount) break;
+    } while (nextPageToken);
+
+    console.log(`Total videos fetched: ${videoIds.length}`);
+    return videoIds;
+  } catch (error) {
+    console.error(
+      "Error fetching video IDs:",
+      error.response?.data || error.message
+    );
+    return [];
+  }
+}
+
 async function main() {
   const channelId = await getChannelId("썰레몬");
   console.log(`Channel Id: ${channelId}`);
+  const videoIds = await getVideoIdsFromChannel(channelId);
+  videoIds.forEach((id) => {
+    console.log(id);
+  });
 }
 
 main();
