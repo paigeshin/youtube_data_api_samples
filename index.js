@@ -18,7 +18,6 @@ async function getVideoDetails(videoId) {
         },
       }
     );
-
     const video = response.data.items[0]; // 첫 번째 결과
     if (video) {
       console.log(video);
@@ -210,8 +209,8 @@ async function getChannelVideos(channelId) {
 // 함
 
 async function main() {
-  const channelId = await getChannelId("결혼하지마");
-  await getChannelVideos(channelId);
+  // const channelId = await getChannelId("결혼하지마");
+  await getChannelVideos("UCIdd39lvc0HcB635hzN0nfw");
 }
 
 main();
