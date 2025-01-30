@@ -181,13 +181,37 @@ async function getRecentVideoIdsFromChannel(channelId, maxCount) {
   }
 }
 
+// 채널의 비디오 목록 가져오기
+async function getChannelVideos(channelId) {
+  const YOUTUBE_API_URL = "https://www.googleapis.com/youtube/v3/";
+  try {
+    const response = await axios.get(`${YOUTUBE_API_URL}channels`, {
+      params: {
+        key: APIKey, // API 키
+        id: channelId, // 채널 ID
+        part: "snippet,statistics", // 필요한 정보 요청 (snippet: 기본 정보, statistics: 구독자 수 등)
+      },
+    });
+
+    // 채널 정보 출력
+    const channel = response.data.items[0];
+    console.log("Channel Title:", channel.snippet.title);
+    console.log("Description:", channel.snippet.description);
+    console.log("Subscriber Count:", channel.statistics.subscriberCount);
+    console.log("View Count:", channel.statistics.viewCount);
+    console.log("Video Count:", channel.statistics.videoCount);
+    console.log(channel);
+    return channel;
+  } catch (error) {
+    console.error("Error fetching channel info:", error);
+  }
+}
+
+// 함
+
 async function main() {
-  const channelId = await getChannelId("썰레몬");
-  console.log(`Channel Id: ${channelId}`);
-  const videoIds = await getVideoIdsFromChannel(channelId);
-  videoIds.forEach((id) => {
-    console.log(id);
-  });
+  const channelId = await getChannelId("결혼하지마");
+  await getChannelVideos(channelId);
 }
 
 main();
