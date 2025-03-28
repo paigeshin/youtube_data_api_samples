@@ -206,11 +206,67 @@ async function getChannelVideos(channelId) {
   }
 }
 
-// 함
+async function getUploadsPlaylistId(channelId) {
+  const url = "https://www.googleapis.com/youtube/v3/channels";
+
+  try {
+    const response = await axios.get(url, {
+      params: {
+        part: "contentDetails",
+        id: channelId,
+        key: APIKey,
+      },
+    });
+
+    const items = response.data.items;
+    if (!items || items.length === 0) {
+      throw new Error("채널 정보를 찾을 수 없습니다.");
+    }
+
+    const playlistId = items[0].contentDetails.relatedPlaylists.uploads;
+    return playlistId;
+  } catch (error) {
+    console.error("playlistId 가져오기 실패:", error.message);
+    throw error;
+  }
+}
+
+async function getVideoIdsFromPlaylist(playlistId) {
+  let videoIds = [];
+  let nextPageToken = null;
+
+  do {
+    const response = await axios.get(
+      "https://www.googleapis.com/youtube/v3/playlistItems",
+      {
+        params: {
+          part: "contentDetails",
+          playlistId: playlistId,
+          maxResults: 50,
+          key: APIKey,
+          pageToken: nextPageToken || "",
+        },
+      }
+    );
+
+    const items = response.data.items || [];
+    items.forEach((item) => {
+      videoIds.push(item.contentDetails.videoId);
+    });
+
+    nextPageToken = response.data.nextPageToken;
+  } while (nextPageToken);
+
+  return videoIds;
+}
 
 async function main() {
-  // const channelId = await getChannelId("결혼하지마");
-  await getChannelVideos("UCIdd39lvc0HcB635hzN0nfw");
+  const channelId = await getChannelId("결혼하지마");
+  const playlistId = await getUploadsPlaylistId(channelId);
+  const videoIds = await getVideoIdsFromPlaylist(playlistId);
+  console.log(videoIds.length);
+  // const playlistId = await getUploadsPlaylistId(channelId);
+  // await getChannelVideos("UCIdd39lvc0HcB635hzN0nfw");
 }
 
 main();
